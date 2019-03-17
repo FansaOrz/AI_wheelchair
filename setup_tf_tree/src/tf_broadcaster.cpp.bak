@@ -1,0 +1,221 @@
+/*********************************************************************
+ *
+ * Software License Agreement (BSD License)
+ *
+ *  Copyright (c) 2008, Willow Garage, Inc.
+ *  All rights reserved.
+ *
+ *  Redistribution and use in source and binary forms, with or without
+ *  modification, are permitted provided that the following conditions
+ *  are met:
+ *
+ *   * Redistributions of source code must retain the above copyright
+ *     notice, this list of conditions and the following disclaimer.
+ *   * Redistributions in binary form must reproduce the above
+ *     copyright notice, this list of conditions and the following
+ *     disclaimer in the documentation and/or other materials provided
+ *     with the distribution.
+ *   * Neither the name of Willow Garage, Inc. nor the names of its
+ *     contributors may be used to endorse or promote products derived
+ *     from this software without specific prior written permission.
+ *
+ *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+ *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+ *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+ *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+ *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+ *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
+ *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+ *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+ *  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+ *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ *  POSSIBILITY OF SUCH DAMAGE.
+ *
+ * Author: Eitan Marder-Eppstein
+ *********************************************************************/
+#include <ros/ros.h>
+#include <tf/transform_broadcaster.h>
+#include <nav_msgs/Odometry.h>
+#include <geometry_msgs/PoseWithCovarianceStamped.h>
+#include <geometry_msgs/Vector3Stamped.h>
+
+#define PI 3.14159265358979323846
+float pan_tf_angle=0;
+float tilt_tf_angle=0;
+float posx=0;
+float posy=0;
+float posz=0;
+float orx=0;
+float ory=0;
+float orz=0;
+float orw=1;
+float wheel_posx=0;
+float wheel_posy=0;
+float wheel_posz=0;
+float wheel_orx=0;
+float wheel_ory=0;
+float wheel_orz=0;
+float wheel_orw=1;
+
+void pan_tiltCallback(const geometry_msgs::Vector3Stamped msg)
+{
+	ROS_INFO("\n Recieving pan_tf_angle = [%f] \n Recieving tilt_tf_angle = [%f]",msg.vector.x,msg.vector.y);
+	pan_tf_angle=msg.vector.x;
+	tilt_tf_angle=msg.vector.y;
+}
+
+void odomCallback(const geometry_msgs::PoseWithCovarianceStamped msg)
+{
+	posx=msg.pose.pose.position.x;
+	posy=msg.pose.pose.position.y;
+	posz=msg.pose.pose.position.z;
+	orx= msg.pose.pose.orientation.x;
+	ory= msg.pose.pose.orientation.y;
+	orz= msg.pose.pose.orientation.z;
+	orw= msg.pose.pose.orientation.w;
+
+//	ROS_INFO("\n Recieving pan_tf_angle = [%f] \n Recieving tilt_tf_angle = [%f]",msg.pan_angle,msg.tilt_angle);
+//	pan_tf_angle=msg.pan_angle;
+//	tilt_tf_angle=msg.tilt_angle;
+}
+void wheelOdomCallback(const nav_msgs::Odometry msg)
+{
+	wheel_posx=msg.pose.pose.position.x;
+	wheel_posy=msg.pose.pose.position.y;
+	wheel_posz=msg.pose.pose.position.z;
+	wheel_orx= msg.pose.pose.orientation.x;
+	wheel_ory= msg.pose.pose.orientation.y;
+	wheel_orz= msg.pose.pose.orientation.z;
+	wheel_orw= msg.pose.pose.orientation.w;
+
+//	ROS_INFO("\n Recieving pan_tf_angle = [%f] \n Recieving tilt_tf_angle = [%f]",msg.pan_angle,msg.tilt_angle);
+//	pan_tf_angle=msg.pan_angle;
+//	tilt_tf_angle=msg.tilt_angle;
+}
+
+int main(int argc, char** argv){
+	ros::init(argc, argv, "setup_tf_tree_node");
+	ros::NodeHandle n;
+	ros::Subscriber odom_sub = n.subscribe<geometry_msgs::PoseWithCovarianceStamped>("robot_pose_ekf/odom_combined", 1, odomCallback);
+	ros::Subscriber wheel_odom_sub = n.subscribe<nav_msgs::Odometry>("/odom", 1, wheelOdomCallback);
+	ros::Subscriber pan_tilt_sub = n.subscribe<geometry_msgs::Vector3Stamped>("/ptu_stamped", 1, pan_tiltCallback);
+	tf::TransformBroadcaster broadcaster;
+
+	ros::Rate r(10);
+
+	while(n.ok()){
+		/*broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf::Quaternion(0,0,0,1), tf::Vector3(0,0.0,0.0)),
+						ros::Time::now(),
+						"/map",
+						"/odom"));
+		*/				
+		
+		/*broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf::Quaternion(orx,ory,orz,orw), tf::Vector3(posx,posy,posz)),
+						ros::Time::now(),
+						"/map",
+						"/odom"));
+						
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf::Quaternion(orx,ory,orz,orw), tf::Vector3(posx,posy,posz)),
+						ros::Time::now(),
+						"/map",
+						"/base_footprint"));
+						
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf::Quaternion(wheel_orx,wheel_ory,wheel_orz,wheel_orw), tf::Vector3(wheel_posx,wheel_posy,wheel_posz)),
+						ros::Time::now(),
+						"/map",
+						"/wheel_odom"));*/
+		
+		//the odom_combined frame is published by the EKF				
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf::Quaternion(0,0,0,1), tf::Vector3(0,0,0)),
+						ros::Time::now(),
+						"/odom_combined",
+						"/map"));	
+		
+		//the pure wheel odometry without orientation (the /imu_frame published by imu_madwick is with respect to the odom_frame!)
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0,0), tf::Vector3(wheel_posx,wheel_posy,wheel_posz)),
+						ros::Time::now(),
+						"/map",
+						"/odom"));
+						
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf::Quaternion(orx,ory,orz,orw), tf::Vector3(posx,posy,posz)),
+						ros::Time::now(),
+						"/map",
+						"/base_footprint"));
+						
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf::Quaternion(wheel_orx,wheel_ory,wheel_orz,wheel_orw), tf::Vector3(wheel_posx,wheel_posy,wheel_posz)),
+						ros::Time::now(),
+						"/map",
+						"/wheel_odom"));
+				
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: Quaternion(0,0,0,1), tf::Vector3(0,0.0,0.26)),
+						ros::Time::now(),
+						"/base_footprint",
+						"/base_link"));
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0/180*PI,0), tf::Vector3(-0.315,0.0,0.17)),
+						ros::Time::now(), //-03 //-0.4,0.2,0.53
+						"/base_link",
+						"/pan_tilt_link"));
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0,0), tf::Vector3(-.18, .08, -0.09)),
+						ros::Time::now(),
+						"/pan_tilt_link",
+						"/imu")); 
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0, (pan_tf_angle)/180.0*PI), tf::Vector3(0.02, 0.0, 1.50)),
+						ros::Time::now(),
+						"/pan_tilt_link",
+						"/pan_link")); //0, 0.0, .7 (basic amd tripod)
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,-(tilt_tf_angle)/180.0*PI,0.), tf::Vector3(0.0, 0.0, 0.04)),
+						ros::Time::now(),
+						"/pan_link",
+						"/tilt_link")); //0.01, -0.01, 0.045(tripod and basic) //0.0, 0.0, 0.045
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf::createQuaternionFromRPY(0,0,0), tf::Vector3(0.0, 0.0, 0.023)), //.0,.0,.03(on the tripod), basic(0.0, 0.1, 0.28)
+						ros::Time::now(),
+						"/tilt_link",
+						"/camera_link"));//+46 //0.0, 0.0, 0.28 //-0.50,46./180.0*PI,0.09
+								
+		/*
+		broadcaster.sendTransform(
+        		tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0.,0.,0.), tf::Vector3(0.0, 0.0325, 0.255)),
+						ros::Time::now(),
+						"/tilt_link",
+						"/camera_depth_optical_frame"));
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0.,0.,0.), tf::Vector3(0.0, 0, 0)),
+						ros::Time::now(),
+						"/camera_depth_frame",
+						"/camera_depth_optical_frame"));
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0.,0.,0.), tf::Vector3(0.0, 0, 0)),
+						ros::Time::now(),
+						"/camera_depth_frame",
+						"/camera_link"));
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0.,0.,0.), tf::Vector3(0.0, 0, 0)),
+						ros::Time::now(),
+						"/camera_depth_frame",
+						"/camera_rgb_frame"));
+		broadcaster.sendTransform(
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0.,0.,0.), tf::Vector3(0.0, 0, 0)),
+						ros::Time::now(),
+						"/camera_depth_frame",
+						"/camera_rgb_optical_frame"));
+		*/
+
+		ros::spinOnce();
+		r.sleep();
+	}
+}

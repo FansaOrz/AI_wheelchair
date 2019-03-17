@@ -1,0 +1,12 @@
+<launch>
+  <node pkg="wheelchair_teleop" type="wheelchair_joy.py" name="wheelchair_joy"  output="screen">
+  </node>
+<!--
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node">
+    <param name="port" type="string" value="/dev/ttyUSB2" />
+  </node>
+-->
+  <node pkg="joy" type="joy_node" name="joy_node">
+    <param name="dev" type="string" value="/dev/input/js0"/>
+  </node>
+</launch>

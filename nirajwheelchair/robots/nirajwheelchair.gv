@@ -1,0 +1,56 @@
+digraph G {
+node [shape=box];
+"base_footprint" [label="base_footprint"];
+"base_link" [label="base_link"];
+"back" [label="back"];
+"footrest_left" [label="footrest_left"];
+"footrest_right" [label="footrest_right"];
+"leftarm" [label="leftarm"];
+"left_armrest" [label="left_armrest"];
+"leftcaster" [label="leftcaster"];
+"leftwheel_small" [label="leftwheel_small"];
+"leftgrip" [label="leftgrip"];
+"leftwheel_large" [label="leftwheel_large"];
+"rightarm" [label="rightarm"];
+"right_armrest" [label="right_armrest"];
+"rightcaster" [label="rightcaster"];
+"rightwheel_small" [label="rightwheel_small"];
+"rightgrip" [label="rightgrip"];
+"rightwheel_large" [label="rightwheel_large"];
+"seat" [label="seat"];
+node [shape=ellipse, color=blue, fontcolor=blue];
+"base_footprint" -> "base_footprint_joint" [label="xyz: 0 0 0.2413 \nrpy: 0 -0 0"]
+"base_footprint_joint" -> "base_link"
+"base_link" -> "back_joint" [label="xyz: -0.2159 -0.30004 0.6477 \nrpy: 1.5708 -0 0"]
+"back_joint" -> "back"
+"base_link" -> "footrest_left_joint" [label="xyz: -0.13335 0.57997 -0.13169 \nrpy: 1.9199 -0 0"]
+"footrest_left_joint" -> "footrest_left"
+"base_link" -> "footrest_right_joint" [label="xyz: 0.13335 0.579971 -0.131687 \nrpy: 1.22173 -1.46484e-07 3.14159"]
+"footrest_right_joint" -> "footrest_right"
+"base_link" -> "leftarm_joint" [label="xyz: -0.24692 -0.1412 0.1397 \nrpy: 1.5708 -1.73472e-18 -0.02038"]
+"leftarm_joint" -> "leftarm"
+"leftarm" -> "left_armrest_joint" [label="xyz: 0 0.31115 0 \nrpy: 3.14159 1.57079 3.14159"]
+"left_armrest_joint" -> "left_armrest"
+"base_link" -> "leftcaster_joint" [label="xyz: -0.2159 0.31274 0.0254 \nrpy: 1.5708 -0 0"]
+"leftcaster_joint" -> "leftcaster"
+"leftcaster" -> "leftwheel_small_joint" [label="xyz: 0 -0.17145 -0.0508 \nrpy: 0 -0 0"]
+"leftwheel_small_joint" -> "leftwheel_small"
+"base_link" -> "leftgrip_joint" [label="xyz: -0.2159 -0.300038 0.6477 \nrpy: 1.5708 -0 3.14159"]
+"leftgrip_joint" -> "leftgrip"
+"base_link" -> "leftwheel_large_joint" [label="xyz: -0.2794 -0.14129 0.0635 \nrpy: 1.5708 -4.23516e-22 -3.14159"]
+"leftwheel_large_joint" -> "leftwheel_large"
+"base_link" -> "rightarm_joint" [label="xyz: 0.23813 -0.14129 0.1397 \nrpy: 1.5708 -0 0"]
+"rightarm_joint" -> "rightarm"
+"rightarm" -> "right_armrest_joint" [label="xyz: 0 0.31115 -0.12979 \nrpy: 3.14159 1.57079 3.14159"]
+"right_armrest_joint" -> "right_armrest"
+"base_link" -> "rightcaster_joint" [label="xyz: 0.2159 0.312737 0.0254 \nrpy: 1.5708 -0 0"]
+"rightcaster_joint" -> "rightcaster"
+"rightcaster" -> "rightwheel_small_joint" [label="xyz: 0 -0.17145 -0.0508 \nrpy: 0 -0 0"]
+"rightwheel_small_joint" -> "rightwheel_small"
+"base_link" -> "rightgrip_joint" [label="xyz: 0.2159 -0.300038 0.6477 \nrpy: 1.5708 -0 3.14159"]
+"rightgrip_joint" -> "rightgrip"
+"base_link" -> "rightwheel_large_joint" [label="xyz: 0.2794 -0.14129 0.0635 \nrpy: 1.5708 -0 0"]
+"rightwheel_large_joint" -> "rightwheel_large"
+"base_link" -> "seat_joint" [label="xyz: -0.000758068 0.27201 0.205318 \nrpy: 1.5708 -0 0"]
+"seat_joint" -> "seat"
+}

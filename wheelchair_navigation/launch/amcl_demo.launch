@@ -1,0 +1,47 @@
+<launch>
+  <!-- 3D sensor -->
+  <include file="$(find astra_launch)/launch/astra.launch">
+    <arg name="rgb_processing" value="false" />
+    <arg name="depth_registration" value="false" />
+    <arg name="depth_processing" value="false" />
+  </include>
+  <!--depthimage2laserscan-->
+  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" output="screen">
+    <param name="scan_height" value="3"/> 
+    <param name="range_max" value="20"/> 
+    <param name="output_frame_id" value="camera_depth_frame"/> 
+    <remap from="image" to="/camera/depth/image_raw" />
+    <remap from="camera_info" to="/camera/depth/camera_info" />
+    <remap from="scan" to="/scan"/>
+  </node>
+
+
+  <!-- Map server -->
+  <arg name="map_file" default="$(find wheelchair_navigation)/maps/THREE.yaml"/>
+  <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+  <!-- Localization -->
+  <arg name="3d_sensor" default="astra"/>
+  <arg name="custom_amcl_launch_file" default="$(find wheelchair_navigation)/launch/includes/$(arg 3d_sensor)_amcl.launch.xml"/> 
+  <arg name="initial_pose_x" default="0.0"/>
+  <arg name="initial_pose_y" default="0.0"/>
+  <arg name="initial_pose_a" default="0.0"/>
+
+  <include file="$(arg custom_amcl_launch_file)">
+    <arg name="initial_pose_x" value="$(arg initial_pose_x)"/>
+    <arg name="initial_pose_y" value="$(arg initial_pose_y)"/>
+    <arg name="initial_pose_a" value="$(arg initial_pose_a)"/>
+  </include>
+
+  <!-- Move base -->
+ <include file="$(find wheelchair_navigation)/launch/includes/move_base.launch.xml"/>
+
+
+  <!-- Move base Turtlebot_move_base-->
+<!--
+  <arg name="custom_param_file" default="$(find turtlebot_navigation)/param/$(arg 3d_sensor)_costmap_params.yaml"/>
+  <include file="$(find turtlebot_navigation)/launch/includes/move_base.launch.xml">
+    <arg name="custom_param_file" value="$(arg custom_param_file)"/>
+  </include>
+-->
+</launch>

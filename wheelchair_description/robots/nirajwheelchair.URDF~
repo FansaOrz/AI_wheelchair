@@ -1,0 +1,908 @@
+<robot
+  name="wheelchair_description">
+  <link name="base_footprint">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+        <geometry>
+          <box size="0.001 0.001 0.001" />
+        </geometry>
+    </visual>
+  </link>
+
+  <joint name="base_footprint_joint" type="fixed">
+    <origin xyz=" 0 0 0.2413" rpy="0 0 0"/>
+    <parent link="base_footprint"/>
+    <child link="base_link"/>
+  </joint>
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="-1.28082845038258E-05 0.101071625118331 -0.0727610834451831"
+        rpy="0 0 0" />
+      <mass
+        value="2.91813448792695" />
+      <inertia
+        ixx="0.256407422045815"
+        ixy="9.4092534200971E-07"
+        ixz="-5.14055785103768E-06"
+        iyy="0.264943521878258"
+        iyz="0.0458755340734657"
+        izz="0.241041719198046" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.63921568627451 0.666666666666667 0.67843137254902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/base_link.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <link
+    name="leftwheel_large">
+    <inertial>
+      <origin
+        xyz="0.00884272121955415 -1.52655665885959E-16 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.09127347260337" />
+      <inertia
+        ixx="0.141718020445608"
+        ixy="-1.70129038814037E-18"
+        ixz="4.38298979910474E-20"
+        iyy="0.0715623057287749"
+        iyz="-7.37535946286494E-20"
+        izz="0.071562305728775" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftwheel_large.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftwheel_large.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leftwheel_large_joint"
+    type="continuous">
+    <origin
+      xyz="-0.2794 -0.14129 0.0635"
+      rpy="1.5708 0 3.1416" />
+    <parent
+      link="base_link" />
+    <child
+      link="leftwheel_large" />
+    <axis
+      xyz="1.0 0 0" />
+  </joint>
+  <link
+    name="rightwheel_large">
+    <inertial>
+      <origin
+        xyz="0.00884272121955421 5.55111512312578E-17 0"
+        rpy="0 0 0" />
+      <mass
+        value="2.09127347260337" />
+      <inertia
+        ixx="0.141718020445608"
+        ixy="-3.7003510904469E-18"
+        ixz="1.20087974757339E-18"
+        iyy="0.0715623057287749"
+        iyz="5.59523873906816E-18"
+        izz="0.071562305728775" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightwheel_large.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightwheel_large.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rightwheel_large_joint"
+    type="continuous">
+    <origin
+      xyz="0.2794 -0.14129 0.0635"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rightwheel_large" />
+    <axis
+      xyz="-1 0 0" />
+  </joint>
+  <link
+    name="rightcaster">
+    <inertial>
+      <origin
+        xyz="2.2944E-08 -0.079941 -0.0063847"
+        rpy="0 0 0" />
+      <mass
+        value="0.064123" />
+      <inertia
+        ixx="0.0001406"
+        ixy="2.3627E-11"
+        ixz="-7.5709E-12"
+        iyy="4.0905E-05"
+        iyz="3.0634E-05"
+        izz="0.00015091" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightcaster.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightcaster.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rightcaster_joint"
+    type="continuous">
+    <origin
+      xyz="0.2159 0.312737499999999 0.0253999999999996"
+      rpy="1.5707963267949 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rightcaster" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="rightwheel_small">
+    <inertial>
+      <origin
+        xyz="3.6892711108294E-13 2.77555756156289E-17 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.290948648858616" />
+      <inertia
+        ixx="0.00171792777524044"
+        ixy="4.50037951992549E-20"
+        ixz="-1.44756607081068E-21"
+        iyy="0.000880037934920854"
+        iyz="9.06796746511257E-20"
+        izz="0.000880037934920855" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightwheel_small.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightwheel_small.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rightwheel_small_joint"
+    type="continuous">
+    <origin
+      xyz="0 -0.17145 -0.0508"
+      rpy="0 0 0" />
+    <parent
+      link="rightcaster" />
+    <child
+      link="rightwheel_small" />
+    <axis
+      xyz="-1 0 0" />
+  </joint>
+  <link
+    name="leftcaster">
+    <inertial>
+      <origin
+        xyz="2.2944E-08 -0.079941 -0.0063847"
+        rpy="0 0 0" />
+      <mass
+        value="0.064123" />
+      <inertia
+        ixx="0.0001406"
+        ixy="2.3627E-11"
+        ixz="-7.5709E-12"
+        iyy="4.0905E-05"
+        iyz="3.0634E-05"
+        izz="0.00015091" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftcaster.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.79216 0.81961 0.93333 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftcaster.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leftcaster_joint"
+    type="continuous">
+    <origin
+      xyz="-0.2159 0.31274 0.0254"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="leftcaster" />
+    <axis
+      xyz="0 -1 0" />
+  </joint>
+  <link
+    name="leftwheel_small">
+    <inertial>
+      <origin
+        xyz="3.6892711108294E-13 2.77555756156289E-17 -5.55111512312578E-17"
+        rpy="0 0 0" />
+      <mass
+        value="0.290948648858616" />
+      <inertia
+        ixx="0.00171792777524044"
+        ixy="4.50037951992647E-20"
+        ixz="-1.55096364737737E-21"
+        iyy="0.000880037934920855"
+        iyz="9.04728794979875E-20"
+        izz="0.000880037934920855" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftwheel_small.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.796078431372549 0.823529411764706 0.937254901960784 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftwheel_small.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leftwheel_small_joint"
+    type="continuous">
+    <origin
+      xyz="0 -0.17145 -0.0508"
+      rpy="0 0 0" />
+    <parent
+      link="leftcaster" />
+    <child
+      link="leftwheel_small" />
+    <axis
+      xyz="-1 0 0" />
+  </joint>
+  <link
+    name="rightarm">
+    <inertial>
+      <origin
+        xyz="1.18010281741077E-07 0.185166937072231 -0.199206461461145"
+        rpy="0 0 0" />
+      <mass
+        value="0.471825089726768" />
+      <inertia
+        ixx="0.0155593318644731"
+        ixy="1.84439011258916E-09"
+        ixz="-3.43766589699374E-09"
+        iyy="0.0117190838949384"
+        iyz="0.00138642687496885"
+        izz="0.00386697456778474" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightarm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.63921568627451 0.666666666666667 0.67843137254902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightarm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rightarm_joint"
+    type="fixed">
+    <origin
+      xyz="0.23813 -0.14129 0.1397"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="rightarm" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="right_armrest">
+    <inertial>
+      <origin
+        xyz="-2.42861286636753E-17 0.0157847733756278 -3.11620174109351E-12"
+        rpy="0 0 0" />
+      <mass
+        value="0.408415585541636" />
+      <inertia
+        ixx="0.000135173991787839"
+        ixy="5.02807841910249E-20"
+        ixz="4.88453589208517E-14"
+        iyy="0.00211830087648834"
+        iyz="-9.09079579520897E-14"
+        izz="0.00204476151647392" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/right_armrest.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.294117647058824 0.294117647058824 0.294117647058824 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/right_armrest.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="right_armrest_joint"
+    type="fixed">
+    <origin
+      xyz="0 0.31115 -0.12979"
+      rpy="0 1.5708 0" />
+    <parent
+      link="rightarm" />
+    <child
+      link="right_armrest" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="leftarm">
+    <inertial>
+      <origin
+        xyz="1.18010281685565E-07 0.185166937072233 -0.199206461461144"
+        rpy="0 0 0" />
+      <mass
+        value="0.471825089726767" />
+      <inertia
+        ixx="0.015559331864473"
+        ixy="1.84439011362186E-09"
+        ixz="-3.43766589311025E-09"
+        iyy="0.0117190838949385"
+        iyz="0.00138642687496879"
+        izz="0.00386697456778471" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftarm.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.63921568627451 0.666666666666667 0.67843137254902 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftarm.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leftarm_joint"
+    type="fixed">
+    <origin
+      xyz="-0.24692 -0.1412 0.1397"
+      rpy="1.5708 -1.2478E-18 -0.02038" />
+    <parent
+      link="base_link" />
+    <child
+      link="leftarm" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="left_armrest">
+    <inertial>
+      <origin
+        xyz="1.52655665885959E-16 0.0157847733756278 -3.11620174109351E-12"
+        rpy="0 0 0" />
+      <mass
+        value="0.408415585541636" />
+      <inertia
+        ixx="0.000135173991787839"
+        ixy="-1.73218564538266E-17"
+        ixz="4.88618841500382E-14"
+        iyy="0.00211830087648834"
+        iyz="-9.09079215940594E-14"
+        izz="0.00204476151647392" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/left_armrest.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.294117647058824 0.294117647058824 0.294117647058824 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/left_armrest.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="left_armrest_joint"
+    type="fixed">
+    <origin
+      xyz="0 0.31115 0"
+      rpy="0 1.5708 0" />
+    <parent
+      link="leftarm" />
+    <child
+      link="left_armrest" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="footrest_right">
+    <inertial>
+      <origin
+        xyz="-0.0236226570016088 0.0138345880544009 1.18350340638784E-09"
+        rpy="0 0 0" />
+      <mass
+        value="0.501530967220647" />
+      <inertia
+        ixx="0.000903120970728862"
+        ixy="-0.000220262508399431"
+        ixz="-5.59521519754147E-11"
+        iyy="0.00273494587361928"
+        iyz="1.10352302924895E-11"
+        izz="0.0020199225032826" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/footrest_right.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.494117647058824 0.494117647058824 0.494117647058824 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/footrest_right.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="footrest_right_joint"
+    type="fixed">
+    <origin
+      xyz="0.133349996040531 0.57997143308514 -0.131687141742198"
+      rpy="1.22173047639603 -1.46483635954078E-07 3.14159265358979" />
+    <parent
+      link="base_link" />
+    <child
+      link="footrest_right" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="footrest_left">
+    <inertial>
+      <origin
+        xyz="-0.0236226546114514 0.0138345921356111 0"
+        rpy="0 0 0" />
+      <mass
+        value="0.501530967220646" />
+      <inertia
+        ixx="0.000903121046837002"
+        ixy="-0.000220262824877906"
+        ixz="-1.02999206386123E-18"
+        iyy="0.00273494579751114"
+        iyz="-2.60208521396521E-18"
+        izz="0.0020199225032826" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/footrest_left.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.494117647058824 0.494117647058824 0.494117647058824 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/footrest_left.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="footrest_left_joint"
+    type="fixed">
+    <origin
+      xyz="-0.13335 0.57997 -0.13169"
+      rpy="1.9199 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="footrest_left" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="rightgrip">
+    <inertial>
+      <origin
+        xyz="-2.77555756156289E-17 0 0.0456011551858931"
+        rpy="0 0 0" />
+      <mass
+        value="0.0252443236384477" />
+      <inertia
+        ixx="2.24921786050753E-05"
+        ixy="6.64838770530638E-38"
+        ixz="-8.25558926882581E-22"
+        iyy="2.24921786050753E-05"
+        iyz="3.9158246270818E-34"
+        izz="4.00656160389394E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightgrip.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.0980392156862745 0.0980392156862745 0.0980392156862745 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/rightgrip.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="rightgrip_joint"
+    type="fixed">
+    <origin
+      xyz="0.2159 -0.300037500000001 0.6477"
+      rpy="1.5707963267949 0 3.14159265358979" />
+    <parent
+      link="base_link" />
+    <child
+      link="rightgrip" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="leftgrip">
+    <inertial>
+      <origin
+        xyz="0 1.1102E-16 0.045601"
+        rpy="0 0 0" />
+      <mass
+        value="0.025244" />
+      <inertia
+        ixx="2.2492E-05"
+        ixy="5.8078E-38"
+        ixz="8.7567E-22"
+        iyy="2.2492E-05"
+        iyz="3.6359E-34"
+        izz="4.0066E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftgrip.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.098039 0.098039 0.098039 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/leftgrip.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="leftgrip_joint"
+    type="fixed">
+    <origin
+      xyz="-0.2159 -0.300037500000001 0.6477"
+      rpy="1.5707963267949 0 3.14159265358979" />
+    <parent
+      link="base_link" />
+    <child
+      link="leftgrip" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="seat">
+    <inertial>
+      <origin
+        xyz="2.8645E-16 0.0065933 0.1905"
+        rpy="0 0 0" />
+      <mass
+        value="0.63387" />
+      <inertia
+        ixx="0.007705"
+        ixy="2.2272E-17"
+        ixz="1.3722E-18"
+        iyy="0.01763"
+        iyz="-1.2773E-19"
+        izz="0.0099994" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/seat.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.1098 0.1098 0.1098 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/seat.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="seat_joint"
+    type="fixed">
+    <origin
+      xyz="-0.000758068437348654 0.272009848683766 0.205317756485755"
+      rpy="1.5707963267949 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="seat" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+  <link
+    name="back">
+    <inertial>
+      <origin
+        xyz="0.2159 -0.23366 -0.12406"
+        rpy="0 0 0" />
+      <mass
+        value="0.8762" />
+      <inertia
+        ixx="0.064112"
+        ixy="1.2796E-07"
+        ixz="-3.0003E-11"
+        iyy="0.079205"
+        iyz="0.0035815"
+        izz="0.14222" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/back.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.2 0.2 0.2 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://wheelchair_description/meshes/back.STL" />
+      </geometry>
+    </collision>
+  </link>
+  <joint
+    name="back_joint"
+    type="fixed">
+    <origin
+      xyz="-0.2159 -0.30004 0.6477"
+      rpy="1.5708 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="back" />
+    <axis
+      xyz="0 0 0" />
+  </joint>
+</robot>
+
+
+

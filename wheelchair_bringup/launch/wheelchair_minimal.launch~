@@ -1,0 +1,23 @@
+<launch>
+  <!-- wheelchair urdf-->
+  <arg name="model" />
+  <arg name="gui" default="False" />
+  <param name="robot_description" textfile="$(find wheelchair_description)/robots/nirajwheelchair.URDF" />
+  <param name="use_gui" value="$(arg gui)" />
+  <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher" />
+  <node name="rviz" pkg="rviz" type="rviz" args="-d $(find wheelchair_description)/urdf.rviz" />
+
+  <rosparam param="base_width">0.615</rosparam>
+  <rosparam param="tick_meter">4463</rosparam>
+
+  <node pkg="rosserial_python" type="serial_node.py" name="serial_node" output="screen">
+    <param name="port" type="string" value="/dev/ttyACM0" />
+  </node>
+
+  <node pkg="wheelchair_bringup" type="twist_to_motors.py" name="twist_to_motors" output="screen"/>
+  <node pkg="wheelchair_bringup" type="kalman.py" name="kalman" output="screen"/>
+  <node pkg="wheelchair_bringup" type="wheelchair_tf.py" name="wheelchair_tf" output="screen" />
+  <node pkg="setup_tf_tree" type="setup_tf_tree_node" name="setup_tf_tree"/>
+
+</launch>

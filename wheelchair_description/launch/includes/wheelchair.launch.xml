@@ -1,0 +1,13 @@
+<launch>
+
+  
+  <arg name="urdf_file" default="$(find xacro)/xacro.py '$(find wheelchair_description)/robots/wheelchair_gazebo.xacro'" />
+  <param name="robot_description" command="$(arg urdf_file)" />
+  
+  <!-- Gazebo model spawner -->
+
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen"
+	args="-urdf -model diff_wheeled_robot -param robot_description"/> 
+
+  
+</launch>

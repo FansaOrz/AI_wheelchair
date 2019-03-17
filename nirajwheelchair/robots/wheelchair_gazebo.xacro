@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="wheelchair">
+<xacro:include filename="$(find nirajwheelchair)/robots/nirajwheelchair.xacro" />
+
+<gazebo>
+  <plugin name="differential_drive_controller" filename="libgazebo_ros_diff_drive.so">
+    <rosDebugLevel>Debug</rosDebugLevel>
+    <publishWheelTF>false</publishWheelTF>
+    <robotNamespace>/</robotNamespace>
+    <publishTf>1</publishTf>
+    <publishWheelJointState>false</publishWheelJointState> 
+    <alwaysOn>true</alwaysOn> 
+    <updateRate>100.0</updateRate>
+    <leftJoint>leftwheel_large_joint</leftJoint>
+    <rightJoint>rightwheel_large_joint</rightJoint>
+    <wheelSeparation>${distance_between_wheels}</wheelSeparation>
+    <wheelDiameter>${largewheel_diameter}</wheelDiameter>
+    <broadcastTF>1</broadcastTF> 
+    <wheelTorque>30</wheelTorque>
+    <wheelAcceleration>${wheel_acceleration}</wheelAcceleration> 
+    <commandTopic>cmd_vel</commandTopic>
+    <odometryFrame>odom</odometryFrame> 
+    <odometryTopic>odom</odometryTopic> 
+    <robotBaseFrame>base_footprint</robotBaseFrame>
+  </plugin>
+</gazebo>
+
+
+<gazebo>
+  <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+    <robotNamespace>/</robotNamespace>
+  </plugin>
+</gazebo>
+
+<gazebo>
+    <plugin name="joint_state_publisher" filename="libgazebo_ros_joint_state_publisher.so">
+      <robotNamespace>/robot/</robotNamespace>
+      <jointName>leftwheel_small_joint, rightwheel_small_joint</jointName>
+      <updateRate>50.0</updateRate>
+      <alwaysOn>true</alwaysOn>
+    </plugin>
+</gazebo>
+
+</robot>

@@ -1,0 +1,5 @@
+<launch>
+  <node pkg="wheelchair_teleop" type="wheelchair_teleop_key.py" name="wheelchair_teleop"  output="screen">
+    <remap from="wheelchair_teleop/cmd_vel" to="cmd_vel"/> 
+  </node>
+</launch>
