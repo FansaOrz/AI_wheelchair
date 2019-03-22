@@ -5,9 +5,9 @@
    creates tf and odometry messages.
    some code borrowed from the arbotix diff_controller script
    A good reference: http://rossum.sourceforge.net/papers/DiffSteer/
-   
-    Copyright (C) 2012 Jon Stephan. 
-     
+
+    Copyright (C) 2012 Jon Stephan.
+
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
     the Free Software Foundation, either version 3 of the License, or
@@ -20,10 +20,10 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
-   
+
    ----------------------------------
    Portions of this code borrowed from the arbotix_python diff_controller.
-   
+
 diff_controller.py - controller for a differential drive
   Copyright (c) 2010-2011 Vanadium Labs LLC.  All right reserved.
 
@@ -34,10 +34,10 @@ diff_controller.py - controller for a differential drive
       * Redistributions in binary form must reproduce the above copyright
         notice, this list of conditions and the following disclaimer in the
         documentation and/or other materials provided with the distribution.
-      * Neither the name of Vanadium Labs LLC nor the names of its 
-        contributors may be used to endorse or promote products derived 
+      * Neither the name of Vanadium Labs LLC nor the names of its
+        contributors may be used to endorse or promote products derived
         from this software without specific prior written permission.
-  
+
   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
   ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
   WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -85,7 +85,7 @@ class pub_odom:
         rospy.init_node("odom_pub")
         self.base_frame_id = rospy.get_param('~base_frame_id','base_footprint') # the name of the base frame of the robot
         self.odom_frame_id = rospy.get_param('~odom_frame_id', 'odom') # the name of the odometry reference frame
-        self.odom_pub = rospy.Publisher('/odom', Odometry, queue_size=1)
+        self.odom_pub = rospy.Publisher('/odom_first', Odometry, queue_size=1)
         self.odomBroadcaster = TransformBroadcaster()
         rospy.Subscriber('/command_velocity', command, self.command_callback)
         rospy.Subscriber('/encoder', String, self.encoder_callback)
@@ -186,12 +186,13 @@ class pub_odom:
                 self.x += (cos(self.th_tol) * dx - sin(self.th_tol) * dy)
                 self.y += (sin(self.th_tol) * dx + cos(self.th_tol) * dy)
             if dth != 0:
-                self.th_tol += dth
+                self.th_tol += 2 * dth
             quaternion = Quaternion()
             quaternion.x = 0.0
             quaternion.y = 0.0
             quaternion.z = sin(self.th_tol / 2)
             quaternion.w = cos(self.th_tol / 2)
+            
             self.odomBroadcaster.sendTransform(
                 (self.x, self.y, 0),
                 (quaternion.x, quaternion.y, quaternion.z, quaternion.w),
@@ -199,6 +200,7 @@ class pub_odom:
                 self.base_frame_id,
                 self.odom_frame_id
             )
+            
             print "left_vel:=", dleft, "right_vel:=", dright, "ang:=", vth, "th_tol:=", self.th_tol
             # 发布odom topic信息
             odom = Odometry()

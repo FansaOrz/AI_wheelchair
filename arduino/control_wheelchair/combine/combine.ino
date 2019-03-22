@@ -8,15 +8,15 @@ control wheelchair motors
 
 ros::NodeHandle nh;
 std_msgs::String str_msg;
- int encoder0PinA = 2;
- int encoder0PinB = 4;
+ int encoder0PinA = 52;
+ int encoder0PinB = 53;
  int n = LOW;
  int m = LOW;
  char msg[3] = "00";
 //front back
-int X_pin = 9;
+int X_pin = 12;
 //left right
-int Y_pin = 10;
+int Y_pin = 13;
 void messageCb( const rosserial_arduino::command& command){
   float X = command.lwheel_vtarget;
   float Y = command.rwheel_vtarget; 

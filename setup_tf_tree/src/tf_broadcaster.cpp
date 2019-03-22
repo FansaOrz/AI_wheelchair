@@ -101,43 +101,10 @@ int main(int argc, char** argv){
 						"/lidar_support_link",
 						"/laser"));
 		broadcaster.sendTransform(
-				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0,0), tf::Vector3(0.0, -0.05, 0.213)),
+				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0,3.1415926), tf::Vector3(0.0, 0.05, 0.213)),
 						ros::Time::now(),
 						"/base_link",
 						"/base_imu_link"));
-						/*
-		broadcaster.sendTransform(
-				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0, 0.0), tf::Vector3(0.00, 0.0, 1.13)),
-						ros::Time::now(),
-						"/pan_tilt_link",
-						"/pan_link")); //0, 0.0, .7 (basic amd tripod)
-						*/
-
-/*broadcaster.sendTransform(
-				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0.0,1.5707963268), tf::Vector3(0.0, 0.035, 0.035)),
-						ros::Time::now(),
-						"/lidar_support_link",
-						"/camera_rgb_frame")); //0.01, -0.01, 0.045(tripod and basic) //0.0, 0.0, 0.045
-broadcaster.sendTransform(
-				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(-1.5707963268,0.0,0.0), tf::Vector3(0.0, 0.0, 0.0)),
-						ros::Time::now(),
-						"/camera_rgb_frame",
-						"/camera_rgb_optical_frame"));
-broadcaster.sendTransform(
-				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0.0,0.0), tf::Vector3(0.0, 0.0, 0.0)),
-						ros::Time::now(),
-						"/camera_rgb_frame",
-						"/camera_depth_frame"));
-broadcaster.sendTransform(
-				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(-1.5707963268,0.0,0.0), tf::Vector3(0.0, 0.0, 0.0)),
-						ros::Time::now(),
-						"/camera_depth_frame",
-						"/camera_depth_optical_frame"));
-broadcaster.sendTransform(
-				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0.0,0.0), tf::Vector3(0.0, 0.0, 0.0)),
-						ros::Time::now(),
-						"/camera_rgb_frame",
-						"/camera_link"));*/
 		ros::spinOnce();
 		r.sleep();
 	}

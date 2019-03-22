@@ -6,7 +6,7 @@
     <arg name="depth_processing" value="false" />
   </include>
   <!--depthimage2laserscan-->
-  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" output="screen">
+  <node pkg="depthimage_to_laserscan" type="depthimage_to_laserscan" name="depthimage_to_laserscan" >
     <param name="scan_height" value="3"/> 
     <param name="range_max" value="20"/> 
     <param name="output_frame_id" value="camera_depth_frame"/> 
@@ -34,7 +34,7 @@
   </include>
 
   <!-- Move base -->
- <include file="$(find wheelchair_navigation)/launch/includes/move_base.launch.xml"/>
+ <include file="$(find wheelchair_navigation)/launch/includes/move_base_wheel.launch.xml"/>
 
 
   <!-- Move base Turtlebot_move_base-->
