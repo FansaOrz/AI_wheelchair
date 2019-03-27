@@ -60,7 +60,7 @@ import serial
 import time
 import rospy
 from rosserial_arduino.msg import command
-from geometry_msgs.msg import PoseWithCovarianceStamped, Quaternion
+from geometry_msgs.msg import PoseWithCovarianceStamped, Quaternion, Twist
 from tf.broadcaster import TransformBroadcaster
 from math import cos, sin
 from std_msgs.msg import String
@@ -74,23 +74,23 @@ class pub_odom:
         self.x = 0                  # position in xy plane
         self.y = 0
         self.th_tol = 0
-        self.f = open("./aaa.txt", 'w')
         self.left_num = 0
         self.right_num = 0
         self.left_old = 0
         self.right_old = 0
         self.if_first = True
-        self.dura = time.time() + 0.2
+        self.dura = time.time() + 0.35
         self.current_pose = PoseWithCovarianceStamped()
         rospy.init_node("odom_pub")
         self.base_frame_id = rospy.get_param('~base_frame_id','base_footprint') # the name of the base frame of the robot
         self.odom_frame_id = rospy.get_param('~odom_frame_id', 'odom') # the name of the odometry reference frame
-        self.odom_pub = rospy.Publisher('/odom_first', Odometry, queue_size=1)
+        self.odom_pub = rospy.Publisher('/odom', Odometry, queue_size=1)
         self.odomBroadcaster = TransformBroadcaster()
-        rospy.Subscriber('/command_velocity', command, self.command_callback)
+        rospy.Subscriber('/cmd_vel', Twist, self.command_callback)
         rospy.Subscriber('/encoder', String, self.encoder_callback)
 
     def command_callback(self, msg):
+        '''
         if abs(msg.lwheel_vtarget) > abs(msg.rwheel_vtarget):
             if msg.lwheel_vtarget < 0:
                 self.left_if_front = True
@@ -105,21 +105,57 @@ class pub_odom:
             elif msg.rwheel_vtarget < 0:
                 self.left_if_front = True
                 self.right_if_front = False
+        '''
+        if msg.linear.x == 0:
+            if msg.angular.z > 0:
+                self.right_if_front = True
+                self.left_if_front = False
+                return
+            if msg.angular.z < 0:
+                self.right_if_front = False
+                self.left_if_front = True
+                return
+            if msg.angular.z == 0:
+                self.right_if_front = True
+                self.left_if_front = True
+                return
+        elif msg.angular.z == 0:
+            if msg.linear.x > 0:
+                self.right_if_front = True
+                self.left_if_front = True
+                return
+            if msg.linear.x < 0:
+                self.right_if_front = False
+                self.left_if_front = False
+                return
+        else:
+            left_vel = msg.linear.x - msg.angular.z * 0.6 / 2
+            right_vel = msg.linear.x + msg.angular.z * 0.6 / 2
+            if left_vel > 0:
+                self.left_if_front = True
+            else:
+                self.left_if_front = False
+            if right_vel > 0:
+                self.right_if_front = True
+            else:
+                self.right_if_front = False
+
+
 
     def encoder_callback(self, msg):
         line = msg.data
         #print line
         if self.if_first:
-            self.left_old = line[0]
-            self.right_old = line[1]
+            self.left_old = line[1]
+            self.right_old = line[0]
             self.if_first = False
             return
-        if line[0] != self.left_old:
+        if line[1] != self.left_old:
             self.left_num += 1
-            self.left_old = line[0]
-        if line[1] != self.right_old:
+            self.left_old = line[1]
+        if line[0] != self.right_old:
             self.right_num += 1
-            self.right_old = line[1]
+            self.right_old = line[0]
         if time.time() > self.dura:
             #left
             ''''
@@ -169,24 +205,27 @@ class pub_odom:
             odom.twist.twist.linear.y = 0
             odom.twist.twist.angular.z = ang
             '''
-            dleft = self.left_num * ((3.14*0.54) / 100) / 2
-            dright = self.right_num * ((3.14*0.54) / 104) / 2
+            dleft = self.left_num * ((3.14*0.54) / 100)
+            dright = self.right_num * ((3.14*0.54) / 104)
             if not self.left_if_front:
                 dleft = -dleft
             if not self.right_if_front:
                 dright = -dright
             dxy_ave = (dright + dleft) / 2.0
             dth = (dright - dleft) / (2*0.6)
-            dt = 0.2
+            dt = 0.35
             vxy = dxy_ave / dt
-            vth = dth / dt
+            vth = (dth / dt) * 1.079
             if dxy_ave != 0:
-                dx = cos(dth) * dxy_ave
-                dy = -sin(dth) * dxy_ave
-                self.x += (cos(self.th_tol) * dx - sin(self.th_tol) * dy)
-                self.y += (sin(self.th_tol) * dx + cos(self.th_tol) * dy)
+                #dx = cos(dth) * dxy_ave
+                #dy = -sin(dth) * dxy_ave
+                #self.x += (cos(self.th_tol) * dx - sin(self.th_tol) * dy)
+                #self.y += (sin(self.th_tol) * dx + cos(self.th_tol) * dy)
+                self.x += dxy_ave * cos(dth) / 2  
+                self.y += dxy_ave * sin(dth)
+
             if dth != 0:
-                self.th_tol += 2 * dth
+                self.th_tol += dth
             quaternion = Quaternion()
             quaternion.x = 0.0
             quaternion.y = 0.0
@@ -201,8 +240,9 @@ class pub_odom:
                 self.odom_frame_id
             )
             
-            print "left_vel:=", dleft, "right_vel:=", dright, "ang:=", vth, "th_tol:=", self.th_tol
+            print "dleft:=", dleft, "dright:=", dright, "vth:=", vth, "th_tol:=", self.th_tol, "x=", self.x, "y=", self.y
             # 发布odom topic信息
+            
             odom = Odometry()
             odom.header.stamp = rospy.Time.now()
             odom.header.frame_id = self.odom_frame_id
@@ -215,12 +255,12 @@ class pub_odom:
             odom.twist.twist.linear.y = 0
             odom.twist.twist.angular.z = vth
             '''
-            odom.pose.covariance[0] = 1e-3
-            odom.pose.covariance[7] = 1e-3
-            odom.pose.covariance[14] = 1e6
-            odom.pose.covariance[21] = 1e6
-            odom.pose.covariance[28] = 1e6
-            odom.pose.covariance[35] = 1e3
+            odom.pose.covariance[0] = 0.1
+            odom.pose.covariance[7] = 0.1
+            odom.pose.covariance[14] = 1e10
+            odom.pose.covariance[21] = 1e10
+            odom.pose.covariance[28] = 1e10
+            odom.pose.covariance[35] = 0.2
             odom.twist.covariance[0] =1e-3
             odom.twist.covariance[7] =1e-3
             odom.twist.covariance[14] =1e6
@@ -231,7 +271,7 @@ class pub_odom:
             self.odom_pub.publish(odom)
             self.left_num = 0
             self.right_num = 0
-            self.dura = time.time() + .2
+            self.dura = time.time() + 0.35
 
 if __name__ == "__main__":
     ss = pub_odom()

@@ -19,17 +19,16 @@
   </node>
 
   <node pkg="wheelchair_bringup" type="twist_to_motors.py" name="twist_to_motors" output="screen"/>
-  <node pkg="wheelchair_bringup" type="pub_odom.py" name="odom_publish"  />
+  <node pkg="wheelchair_bringup" type="pub_odom.py" name="odom_publish"  output="screen"/>
   
   <node pkg="setup_tf_tree" type="setup_tf_tree_node" name="setup_tf_tree"/>
-
+<!--
   <node pkg="wheelchair_bringup" type="odom_ekf.py" name="odom_ekf" output="screen">
     <remap from="input" to="/robot_pose_ekf/odom_combined"/>
     <remap from="output" to="/odom"/>
   </node>
 
-  <!--robot pose ekf-->
-  <!--<include file="$(find robot_pose_ekf)/launch/robot_pose_ekf.launch" />
-  <include file="$(find razor_imu_9dof)/launch/razor-pub.launch"/>-->
-
+  <include file="$(find robot_pose_ekf)/launch/robot_pose_ekf.launch" />
+  <include file="$(find razor_imu_9dof)/launch/razor-pub.launch"/>
+-->
 </launch>

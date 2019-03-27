@@ -7,5 +7,5 @@ global_costmap:
    rolling_window: false
    transform_tolerance: 0.5
  
-   inflation_radius: 1.0
+   inflation_radius: 0.7
    footprint_padding: 0.0

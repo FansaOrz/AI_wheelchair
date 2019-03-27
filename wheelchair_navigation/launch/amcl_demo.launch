@@ -34,7 +34,7 @@
   </include>
 
   <!-- Move base -->
- <include file="$(find wheelchair_navigation)/launch/includes/move_base_wheel.launch.xml"/>
+ <include file="$(find wheelchair_navigation)/launch/includes/move_base.launch.xml"/>
 
 
   <!-- Move base Turtlebot_move_base-->

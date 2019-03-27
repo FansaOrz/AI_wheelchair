@@ -8,8 +8,8 @@ control wheelchair motors
 
 ros::NodeHandle nh;
 std_msgs::String str_msg;
- int encoder0PinA = 52;
- int encoder0PinB = 53;
+ int encoder0PinA = 51;
+ int encoder0PinB = 52;
  int n = LOW;
  int m = LOW;
  char msg[3] = "00";

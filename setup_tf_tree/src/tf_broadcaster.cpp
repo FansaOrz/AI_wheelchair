@@ -77,6 +77,7 @@ int main(int argc, char** argv){
 						"/odom",
 						"/base_footprint"));
 
+
         broadcaster.sendTransform(
 				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0.0,-1.5707963268), tf::Vector3(0.0,0.0,0.2413)),
 						ros::Time::now(),
@@ -100,6 +101,7 @@ int main(int argc, char** argv){
 						ros::Time::now(),
 						"/lidar_support_link",
 						"/laser"));
+
 		broadcaster.sendTransform(
 				tf::StampedTransform(tf::Transform(tf:: createQuaternionFromRPY(0,0,3.1415926), tf::Vector3(0.0, 0.05, 0.213)),
 						ros::Time::now(),
